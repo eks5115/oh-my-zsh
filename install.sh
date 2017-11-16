@@ -34,6 +34,16 @@ inArray() {
 	echo false
 }
 
+installZSH() {
+	if [ ! `which zsh` ];then
+		if [ $[isLinux] = true ];then
+			apt-get install zsh
+		else
+			brew install zsh
+		fi
+	fi
+}
+
 installOfficial() {
 	if [ ! -e ${ZSH} ]; then
 		sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -76,6 +86,9 @@ installPlugins() {
 #########################
 ###
 # execute
+
+# install zsh
+installZSH
 
 # install official oh-my-zsh
 installOfficial
