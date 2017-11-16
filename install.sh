@@ -1,4 +1,3 @@
-#!/usr/bin/zsh
 
 #########################
 #########################
@@ -36,8 +35,8 @@ inArray() {
 
 installZSH() {
 	if [ ! `which zsh` ];then
-		if [ $[isLinux] = true ];then
-			apt-get install zsh
+		if [ ${isLinux} = true ];then
+			sudo apt-get install zsh
 		else
 			brew install zsh
 		fi
@@ -46,7 +45,7 @@ installZSH() {
 
 installOfficial() {
 	if [ ! -e ${ZSH} ]; then
-		sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh|sed '/env zsh$/d')"
 	fi
 }
 
@@ -97,4 +96,4 @@ installOfficial
 installPlugins
 
 # source
-source ~/.zshrc
+env zsh
