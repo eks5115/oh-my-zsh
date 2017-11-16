@@ -1,10 +1,38 @@
-#!/usr/bin/env bash
+#!/usr/bin/zsh
+
+#########################
+#########################
+###
+# prepare
+
+isLinux=true
+if [ `uname -s` = 'Linux' ]; then
+	 isLinux=true
+else
+	isLinux=false
+fi
 
 if [ ! -n "$ZSH" ]; then
 	ZSH=~/.oh-my-zsh
 fi
 
 PLUGINS=${ZSH}/plugins
+
+#########################
+###
+# function
+
+inArray() {
+	for i in $2
+	do
+		if [ $1 = ${i} ];then
+			echo true
+			return
+		fi
+	done
+
+	echo false
+}
 
 installOfficial() {
 	if [ ! -e ${ZSH} ]; then
@@ -16,14 +44,44 @@ installPlugins() {
 	# plugin zsh-autosuggestions
 	if [ ! -e ${PLUGINS}/zsh-autosuggestions ]; then
 		git clone git://github.com/zsh-users/zsh-autosuggestions ${PLUGINS}/zsh-autosuggestions
+	#else
+		#git pull
 	fi
 
-	# TODO write plugin to .zshrc
+	newPluginsArray=('zsh-autosuggestions' 'autojump')
+
+	# write plugin to .zshrc
+	oldPluginsArray=(`sed -n '/^plugins=(/{n; p;}' ~/.zshrc`)
+
+	index=0
+	merge=(${oldPluginsArray[*]})
+	length=${#merge[*]}
+	for i in ${newPluginsArray[*]}
+	do
+		if [ ! `inArray ${i} "${oldPluginsArray[*]}"` = true ];then
+			let "index++"
+			let "ind=length+index"
+			merge[${ind}]=${i}
+		fi
+	done
+
+	if [ ${isLinux} = true ];then
+		sed -i "/^plugins=(/{n;s/.*/${merge[*]}/;}" ~/.zshrc
+	else
+		sed -i '' "/^plugins=(/{n;s/.*/${merge[*]}/;}" ~/.zshrc
+	fi
+
 }
 
+#########################
+###
+# execute
 
 # install official oh-my-zsh
 installOfficial
 
 # install plugins
 installPlugins
+
+# source
+source ~/.zshrc
