@@ -1,3 +1,4 @@
+#!/bin/bash
 
 #########################
 #########################
@@ -43,7 +44,17 @@ installZSH() {
 	fi
 }
 
-installOfficial() {
+installGit() {
+	if [ ! `which git` ];then
+		if [ ${isLinux} = true ];then
+			sudo apt-get install git
+		else
+			brew install git
+		fi
+	fi
+}
+
+installOhMyZsh() {
 	if [ ! -e ${ZSH} ]; then
 	  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh|sed '/env zsh$/d')"
 	fi
@@ -86,14 +97,22 @@ installPlugins() {
 ###
 # execute
 
+###
 # install zsh
 installZSH
 
-# install official oh-my-zsh
-installOfficial
+###
+# install oh-my-zsh
+installOhMyZsh
 
+###
+# install git
+installGit
+
+###
 # install plugins
 installPlugins
 
+###
 # source
 env zsh
