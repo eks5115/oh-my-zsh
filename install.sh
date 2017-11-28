@@ -4,6 +4,8 @@
 #########################
 ###
 # prepare
+git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
+cd /tmp/oh-my-zsh/
 
 isLinux=true
 if [ `uname -s` = 'Linux' ]; then
@@ -34,6 +36,34 @@ inArray() {
 	echo false
 }
 
+myPlugins=(`ls ./plugins`)
+
+getPluginNames() {
+	tmpPluginNames=()
+	i=0
+	while(( $i<${#myPlugins[*]} ))
+	do
+    tmpPluginNames[${i}]=$(basename ${myPlugins[${i}]} .git.plugin)
+    let "i++"
+	done
+	echo ${tmpPluginNames[*]}
+}
+pluginNames=(`getPluginNames`)
+ohMyZshPluginNames=('autojump')
+
+pullGitPlugins() {
+	i=0
+	while(( $i<${#myPlugins[*]} ))
+	do
+		if [ ! -e ${PLUGINS}'/'$(basename ${myPlugins[${i}]} .git.plugin) ];then
+			git clone `cat "plugins/${myPlugins[${i}]}"` ${PLUGINS}/$(basename ${myPlugins[${i}]} .git.plugin)
+		fi
+
+		let "i++"
+	done
+}
+
+
 installZSH() {
 	if [ ! `which zsh` ];then
 		if [ ${isLinux} = true ];then
@@ -61,17 +91,19 @@ installOhMyZsh() {
 }
 
 installPlugins() {
-	# plugin zsh-autosuggestions
-	if [ ! -e ${PLUGINS}/zsh-autosuggestions ]; then
-		git clone git://github.com/zsh-users/zsh-autosuggestions ${PLUGINS}/zsh-autosuggestions
-	fi
+#	# plugin zsh-autosuggestions
+#	if [ ! -e ${PLUGINS}/zsh-autosuggestions ]; then
+#		git clone git://github.com/zsh-users/zsh-autosuggestions ${PLUGINS}/zsh-autosuggestions
+#	fi
+#
+#	# plugin zsh-autosuggestions
+#	if [ ! -e ${PLUGINS}/zsh-syntax-highlighting ]; then
+#		git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ${PLUGINS}/zsh-syntax-highlighting
+#	fi
 
-	# plugin zsh-autosuggestions
-	if [ ! -e ${PLUGINS}/zsh-syntax-highlighting ]; then
-		git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ${PLUGINS}/zsh-syntax-highlighting
-	fi
+	pullGitPlugins
 
-	newPluginsArray=('zsh-autosuggestions' 'autojump' 'zsh-syntax-highlighting')
+	newPluginsArray=(${ohMyZshPluginNames[*]} ${pluginNames[*]})
 
 	# write plugin to .zshrc
 	oldPluginsArray=(`sed -n '/^plugins=(/{n; p;}' ~/.zshrc`)
@@ -118,4 +150,6 @@ installPlugins
 
 ###
 # source
-env zsh
+if [ "/bin/zsh" != "${SHELL}" ];then
+	env zsh
+fi
