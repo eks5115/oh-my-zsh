@@ -64,11 +64,14 @@ installPlugins() {
 	# plugin zsh-autosuggestions
 	if [ ! -e ${PLUGINS}/zsh-autosuggestions ]; then
 		git clone git://github.com/zsh-users/zsh-autosuggestions ${PLUGINS}/zsh-autosuggestions
-	#else
-		#git pull
 	fi
 
-	newPluginsArray=('zsh-autosuggestions' 'autojump')
+	# plugin zsh-autosuggestions
+	if [ ! -e ${PLUGINS}/zsh-syntax-highlighting ]; then
+		git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ${PLUGINS}/zsh-syntax-highlighting
+	fi
+
+	newPluginsArray=('zsh-autosuggestions' 'autojump' 'zsh-syntax-highlighting')
 
 	# write plugin to .zshrc
 	oldPluginsArray=(`sed -n '/^plugins=(/{n; p;}' ~/.zshrc`)
