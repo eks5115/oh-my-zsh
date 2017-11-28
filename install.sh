@@ -153,3 +153,5 @@ installPlugins
 if [ "/bin/zsh" != "${SHELL}" ];then
 	env zsh
 fi
+
+cd ~
