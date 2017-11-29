@@ -49,7 +49,7 @@ getPluginNames() {
   echo ${tmpPluginNames[*]}
 }
 pluginNames=(`getPluginNames`)
-ohMyZshPluginNames=('autojump')
+ohMyZshPluginNames=(autojump, brew, Composer, docker git, svn, mvn, gradle)
 
 pullGitPlugins() {
   i=0
