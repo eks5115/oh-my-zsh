@@ -49,7 +49,7 @@ getPluginNames() {
   echo ${tmpPluginNames[*]}
 }
 pluginNames=(`getPluginNames`)
-ohMyZshPluginNames=(autojump, brew, Composer, docker git, svn, mvn, gradle)
+ohMyZshPluginNames=(redis-cli, autojump, brew, Composer, docker, git, svn, mvn, gradle, npm, yarn)
 
 pullGitPlugins() {
   i=0
@@ -147,6 +147,10 @@ installGit
 ###
 # install plugins
 installPlugins
+
+###
+# rm tmp files
+rm -rf /tmp/oh-my-zsh
 
 ###
 # source
