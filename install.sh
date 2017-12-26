@@ -1,5 +1,41 @@
 #!/bin/bash
 
+#########################
+#########################
+###
+# prepare
+
+installZSH() {
+  if [ ! `which zsh` ];then
+    if [ ${isLinux} = true ];then
+      sudo apt-get install zsh
+    else
+      brew install zsh
+    fi
+  fi
+}
+
+installGit() {
+  if [ ! `which git` ];then
+    if [ ${isLinux} = true ];then
+      sudo apt-get install git
+    else
+      brew install git
+    fi
+  fi
+}
+
+###
+# install zsh
+installZSH
+
+###
+# install git
+installGit
+
+git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
+cd /tmp/oh-my-zsh/
+
 isLinux=true
 if [ `uname -s` = 'Linux' ]; then
   isLinux=true
@@ -56,27 +92,6 @@ pullGitPlugins() {
   done
 }
 
-
-installZSH() {
-  if [ ! `which zsh` ];then
-    if [ ${isLinux} = true ];then
-      sudo apt-get install zsh
-    else
-      brew install zsh
-    fi
-  fi
-}
-
-installGit() {
-  if [ ! `which git` ];then
-    if [ ${isLinux} = true ];then
-      sudo apt-get install git
-    else
-      brew install git
-    fi
-  fi
-}
-
 installOhMyZsh() {
   if [ ! -e ${ZSH} ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh|sed '/env zsh$/d')"
@@ -126,21 +141,8 @@ installPlugins() {
 # execute
 
 ###
-# install zsh
-installZSH
-
-###
-# install git
-installGit
-
-###
 # install oh-my-zsh
 installOhMyZsh
-
-###
-# prepare
-git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
-cd /tmp/oh-my-zsh/
 
 ###
 # install plugins
