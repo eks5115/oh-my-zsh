@@ -1,12 +1,5 @@
 #!/bin/bash
 
-#########################
-#########################
-###
-# prepare
-git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
-cd /tmp/oh-my-zsh/
-
 isLinux=true
 if [ `uname -s` = 'Linux' ]; then
   isLinux=true
@@ -137,12 +130,17 @@ installPlugins() {
 installZSH
 
 ###
+# install git
+installGit
+
+###
 # install oh-my-zsh
 installOhMyZsh
 
 ###
-# install git
-installGit
+# prepare
+git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
+cd /tmp/oh-my-zsh/
 
 ###
 # install plugins
