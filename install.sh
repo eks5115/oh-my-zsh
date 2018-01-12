@@ -78,7 +78,7 @@ getPluginNames() {
   echo ${tmpPluginNames[*]}
 }
 pluginNames=(`getPluginNames`)
-ohMyZshPluginNames=(redis-cli, autojump, brew, Composer, docker, git, svn, mvn, gradle, npm, yarn)
+ohMyZshPluginNames=(redis-cli autojump brew Composer docker git svn mvn gradle npm yarn)
 
 pullGitPlugins() {
   i=0
