@@ -5,6 +5,13 @@
 ###
 # prepare
 
+isLinux=true
+if [ `uname -s` = 'Linux' ]; then
+  isLinux=true
+else
+  isLinux=false
+fi
+
 installZSH() {
   if [ ! `which zsh` ];then
     if [ ${isLinux} = true ];then
@@ -35,13 +42,6 @@ installGit
 
 git clone https://github.com/eks5115/oh-my-zsh.git /tmp/oh-my-zsh/
 cd /tmp/oh-my-zsh/
-
-isLinux=true
-if [ `uname -s` = 'Linux' ]; then
-  isLinux=true
-else
-  isLinux=false
-fi
 
 if [ ! -n "$ZSH" ]; then
   ZSH=~/.oh-my-zsh
